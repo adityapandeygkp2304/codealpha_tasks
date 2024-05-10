@@ -1,0 +1,75 @@
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct Task {
+    string description;
+    bool completed;
+};
+
+class ToDoList {
+private:
+    vector<Task> tasks;
+
+public:
+    void addTask(string description) {
+        tasks.push_back({description, false});
+    }
+
+    void markCompleted(int index) {
+        if (index >= 0 && index < tasks.size()) {
+            tasks[index].completed = true;
+        } else {
+            cout << "Invalid task index" << endl;
+        }
+    }
+
+    void viewTasks() {
+        cout << "Your current tasks:" << endl;
+        for (size_t i = 0; i < tasks.size(); ++i) {
+            string status = tasks[i].completed ? "Completed" : "Not Completed";
+            cout << i + 1 << ". " << tasks[i].description << " - " << status << endl;
+        }
+    }
+};
+
+int main() {
+    ToDoList todoList;
+
+    while (true) {
+        cout << "\n1. Add Task\n2. Mark Task as Completed\n3. View Tasks\n4. Quit" << endl;
+        cout << "Enter your choice: ";
+        int choice;
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                string description;
+                cout << "Enter task description: ";
+                cin.ignore(); // Clear input buffer
+                getline(cin, description);
+                todoList.addTask(description);
+                cout << "Task added successfully!" << endl;
+                break;
+            }
+            case 2: {
+                int index;
+                cout << "Enter task index to mark as completed: ";
+                cin >> index;
+                todoList.markCompleted(index - 1); // Subtract 1 to convert to 0-based indexing
+                cout << "Task marked as completed!" << endl;
+                break;
+            }
+            case 3:
+                todoList.viewTasks();
+                break;
+            case 4:
+                cout << "Thank you for using the To-Do List Application. Goodbye!" << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
